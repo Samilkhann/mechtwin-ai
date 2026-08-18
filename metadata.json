@@ -1,0 +1,6 @@
+{
+  "name": "MECHTWIN AI",
+  "description": "Intelligent Digital Twin Platform — Engineering Intelligence for Every Machine. Created & Engineered by Samil Khan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
