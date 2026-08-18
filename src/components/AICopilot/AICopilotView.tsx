@@ -1,3 +1,4 @@
+import { GoogleGenAI } from '@google/genai';
 /**
  * MechTwin AI - AI Mechanical Engineering Copilot View
  */
@@ -86,12 +87,16 @@ How can I assist you with failure mode root cause analysis, ISO standards, or ma
     setMessages(prev => [...prev, userMsg]);
     if (!customPrompt) setInputMessage('');
     setIsLoading(true);
+const ai = new GoogleGenAI({ 
+  apiKey: import.meta.env.VITE_GEMINI_API_KEY || ''
+});
 
-    try {
-      const response = await fetch('/api/ai/copilot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+const response = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: customPrompt || '',
+});
+
+const dataText = response.text;
           message: textToSend,
           machineContext: {
             id: machine.id,
