@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 /**
  * MechTwin AI - AI Mechanical Engineering Copilot View
- */
+ */ 
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Machine } from '../../types';
@@ -10,14 +10,11 @@ import {
   Send,
   Bot,
   User,
-  RotateCcw,
   Copy,
   Check,
-  Cpu,
   Activity,
   Thermometer,
   ShieldCheck,
-  HelpCircle,
   Lightbulb,
 } from 'lucide-react';
 
@@ -51,7 +48,7 @@ I have loaded telemetry and kinematic models for **${machine.name}** (Tag: \`${m
 
 How can I assist you with failure mode root cause analysis, ISO standards, or maintenance scheduling?`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      engine: 'gemini-3.7-flash',
+      engine: 'gemini-2.5-flash',
     },
   ]);
 
@@ -87,44 +84,33 @@ How can I assist you with failure mode root cause analysis, ISO standards, or ma
     setMessages(prev => [...prev, userMsg]);
     if (!customPrompt) setInputMessage('');
     setIsLoading(true);
-const ai = new GoogleGenAI({ 
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY || ''
-});
 
-const response = await ai.models.generateContent({
-  model: 'gemini-2.5-flash',
-  contents: customPrompt || '',
-});
-
-const dataText = response.text;
-          message: textToSend,
-          machineContext: {
-            id: machine.id,
-            name: machine.name,
-            type: machine.type,
-            healthScore: machine.healthBreakdown.overallScore,
-            status: machine.healthBreakdown.status,
-            temperature: machine.latestTelemetry.temperature,
-            vibration: machine.latestTelemetry.vibration,
-            vibrationKurtosis: machine.latestTelemetry.vibrationKurtosis,
-            rpm: machine.latestTelemetry.rpm,
-            power: machine.latestTelemetry.power,
-            current: machine.latestTelemetry.current,
-            voltage: machine.latestTelemetry.voltage,
-            activeFaults: machine.activeFaults,
-            operatingHours: machine.operatingHours,
-          },
-        }),
+    try {
+      const ai = new GoogleGenAI({ 
+        apiKey: (import.meta as any).env?.VITE_GEMINI_API_KEY || ''
       });
 
-      const data = await response.json();
+      const promptContext = `System Context: You are MechTwin AI, an expert mechanical engineering copilot.
+Machine Context: ${machine.name} (ID: ${machine.id})
+Health Score: ${machine.healthBreakdown.overallScore}/100 (${machine.healthBreakdown.status})
+Telemetry: Temp: ${machine.latestTelemetry.temperature}°C, Vibration: ${machine.latestTelemetry.vibration}mm/s RMS, RPM: ${machine.latestTelemetry.rpm}, Power: ${machine.latestTelemetry.power}kW.
+Active Faults: ${machine.activeFaults.map(f => f.faultType).join(', ') || 'None'}
+
+User Query: ${textToSend}`;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: promptContext,
+      });
+
+      const dataText = response.text || 'No response generated from engineering copilot.';
 
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
         sender: 'ai',
-        text: data.response || 'No response generated from engineering copilot.',
+        text: dataText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        engine: data.engine || 'gemini-3.7-flash',
+        engine: 'gemini-2.5-flash',
       };
 
       setMessages(prev => [...prev, aiMsg]);
@@ -135,7 +121,7 @@ const dataText = response.text;
         {
           id: `ai-err-${Date.now()}`,
           sender: 'ai',
-          text: 'Encountered network error while connecting to engineering intelligence server.',
+          text: 'Encountered error while connecting to engineering intelligence server. Please check your Gemini API key.',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
@@ -214,7 +200,7 @@ const dataText = response.text;
                 <span>{msg.timestamp}</span>
               </div>
 
-              {/* Message Body with clean paragraph & markdown rendering */}
+              {/* Message Body */}
               <div className="prose prose-invert prose-xs max-w-none text-slate-200 space-y-2 whitespace-pre-line font-sans">
                 {msg.text}
               </div>
