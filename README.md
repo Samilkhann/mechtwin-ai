@@ -1,20 +1,52 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# MECHTWIN AI
 
-# Run and deploy your AI Studio app
+## Intelligent Digital Twin Platform for Mechanical Systems
 
-This contains everything you need to run your app locally.
+> Engineering Intelligence for Every Machine.
 
-View your app in AI Studio: https://ai.studio/apps/5e2e7e5b-7991-4968-a896-cf2008a1da47
+MECHTWIN AI is an engineering-focused digital twin platform designed to connect mechanical engineering analysis, machine monitoring, simulation, predictive maintenance and contextual AI into a single intelligent workspace.
 
-## Run Locally
+The platform is designed around a centrifugal pump system and demonstrates how machine data can be transformed into engineering insights, health assessment, anomaly detection and maintenance recommendations.
 
-**Prerequisites:**  Node.js
+---
 
+## Overview
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Modern mechanical systems generate large amounts of operational data, but raw sensor data alone does not provide an engineer with a complete understanding of machine condition.
+
+MECHTWIN AI aims to bridge that gap by combining:
+
+- Digital Twin visualization
+- Machine health monitoring
+- Engineering calculations
+- Machine simulation
+- Predictive maintenance concepts
+- Anomaly analysis
+- AI-assisted engineering decisions
+- Maintenance management
+- Industrial IoT readiness
+
+The long-term objective is to develop a scalable engineering intelligence platform capable of connecting physical machines with their digital representations.
+
+---
+
+## Core Concept
+
+```text
+Physical Machine
+       ↓
+Sensors / Machine Data
+       ↓
+Data Processing
+       ↓
+Digital Twin
+       ↓
+Machine Health Analysis
+       ↓
+Anomaly Detection
+       ↓
+Predictive Intelligence
+       ↓
+AI Engineering Assistant
+       ↓
+Maintenance Recommendation
